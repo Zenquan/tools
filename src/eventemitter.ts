@@ -29,7 +29,7 @@ class EventEmitter implements IEventEmitter{
     if (this.events[type]) {
       if (this._maxListeners !== 0 && this.events[type].length > this._maxListeners) {
         console.error(` MaxListenersExceededWarning: Possible EventEmitter memory leak detected.
-         ${this.events[type].length - this._maxListeners} 响 listeners added. Use emitter.setMaxListeners() to increase limit`)
+        ${this.events[type].length - this._maxListeners} 响 listeners added. Use emitter.setMaxListeners() to increase limit`)
       }
       this.events[type].push(listener)
     } else {
@@ -75,4 +75,4 @@ class EventEmitter implements IEventEmitter{
   }
 }
 
-export default new EventEmitter
+export default new EventEmitter()
