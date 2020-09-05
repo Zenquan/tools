@@ -1,4 +1,4 @@
-class Storage {
+class StorageService {
   public ls: Storage;
   public ss: Storage;
   constructor() {
@@ -9,9 +9,9 @@ class Storage {
   /*-----------------localStorage---------------------*/
   /*设置localStorage*/
   setLocal(key, val) {
-    var setting = arguments[0];
+    let setting = arguments[0];
     if (Object.prototype.toString.call(setting).slice(8, -1) === 'Object') {
-      for (var i in setting) {
+      for (let i in setting) {
         this.ls.setItem(i, JSON.stringify(setting[i]))
       }
     } else {
@@ -41,9 +41,9 @@ class Storage {
   /*-----------------sessionStorage---------------------*/
   /*设置sessionStorage*/
   setSession(key, val) {
-    var setting = arguments[0];
+    let setting = arguments[0];
     if (Object.prototype.toString.call(setting).slice(8, -1) === 'Object') {
-      for (var i in setting) {
+      for (let i in setting) {
         this.ss.setItem(i, JSON.stringify(setting[i]))
       }
     } else {
@@ -71,4 +71,4 @@ class Storage {
 
 }
 
-export default Storage;
+export default StorageService;

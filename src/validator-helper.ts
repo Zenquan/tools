@@ -1,7 +1,7 @@
 const validateSecIdCard = (code: string): boolean => {
   if (!/^\d{17}(\d|x)$/i.test(code)) return false;
 
-  var province = {
+  let province = {
     11: "北京", 12: "天津", 13: "河北", 14: "山西", 15: "内蒙",
     21: "辽宁", 22: "吉林", 23: "黑龙", 31: "上海", 32: "江苏",
     33: "浙江", 34: "安徽", 35: "福建", 36: "江西", 37: "山东",
