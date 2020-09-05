@@ -22,7 +22,7 @@ class StorageService {
 
   /*获取localStorage*/
   getLocal(key) {
-    if (key) return JSON.parse(this.ls.getItem(key))
+    if (key) return JSON.parse(`${this.ls.getItem(key)}`)
     return null;
 
   }
@@ -54,7 +54,7 @@ class StorageService {
 
   /*获取sessionStorage*/
   getSession(key) {
-    if (key) return JSON.parse(this.ss.getItem(key))
+    if (key) return JSON.parse(`${this.ss.getItem(key)}`)
     return null;
 
   }

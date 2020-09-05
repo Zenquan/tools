@@ -3,7 +3,11 @@ import utils from './utils';
 const { ABS, isTarget, calcLen, calcAngle } = utils
 
 class Gesture {
-  target: HTMLElement | string | null | Document | object & { addEventListener: Function }
+  target: HTMLElement | string | null | Document | object 
+    & { 
+      addEventListener: Function,
+      removeEventListener: Function
+    }
   selector: HTMLElement
   pretouch: object
   handles: object
@@ -26,6 +30,12 @@ class Gesture {
     y: number | null
   }
   startDistance: number
+  pretouch: {
+    time: number,
+    startX: number,
+    startY: number
+  }
+  e: Event
   constructor(target, selector) {
     this.target = target instanceof HTMLElement ? target : typeof target === "string" ? document.querySelector(target) : null;
     if (!this.target) return;
@@ -47,12 +57,17 @@ class Gesture {
     this.target.addEventListener('touchend', this._end, false);
     this.target.addEventListener('touchcancel', this._cancel, false);
   }
-  _touch(e: {target: any, touches: Array<Event & {}>}) {
+  _touch(e: {
+    target: any, 
+    preventDefault: Function, 
+    touches: Array<Event>
+  }) {
     this.e = e.target;
-    var point: {
-      pageX: number,
-      pageY: number
-    } = e.touches ? e.touches[0] : e;
+    var point: Event & {pageX: number,  pageY: number} | { 
+      target: any; 
+      preventDefault: Function; 
+      touches: Event[]; 
+    } & {pageX: number,  pageY: number} = e.touches ? e.touches[0] : e;
     var now = Date.now();
     this.touch.startX = point.pageX;
     this.touch.startY = point.pageY;
