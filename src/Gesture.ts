@@ -2,29 +2,46 @@ import utils from './utils';
 
 const { ABS, isTarget, calcLen, calcAngle } = utils
 
-class Gesture {
-  target: HTMLElement | string | null | Document | object 
-    & { 
+interface IGesture {
+  _init: Function
+  _emit: Function
+  _touch: Function
+  _move: Function
+  _end: Function
+  on: Function
+  off: Function
+  set: Function
+  _cancel: Function
+  destroy: Function
+}
+
+type IPoint = Event | { 
+  target: any; 
+  preventDefault: Function; 
+  touches: Event[],
+} | {
+  pageX: number,
+  pageY: number,
+}
+
+class Gesture implements IGesture {
+  target: HTMLElement | null | object
+    & {
       addEventListener: Function,
       removeEventListener: Function
     }
   selector: HTMLElement
-  pretouch: object
   handles: object
-  preVector: {
-    x: object | null,
-    y: object | null
-  }
   distance: number
   touch: {
     startX: number,
     startY: number,
     startTime: number
   }
-  longTapTimeout: NodeJS.Timeout
+  longTapTimeout: NodeJS.Timeout | null
   tapTimeout: NodeJS.Timeout
   doubleTap: boolean
-  longtapTime: NodeJS.Timeout
+  longtapTime: NodeJS.Timeout | number
   preVector: {
     x: number | null,
     y: number | null
@@ -36,12 +53,34 @@ class Gesture {
     startY: number
   }
   e: Event
+  movetouch: {
+    x: number,
+    y: number
+  }
+  params: {
+    zoom: number,
+    deltaX: number,
+    deltaY: number,
+    diffX: number,
+    diffY: number,
+    angle: number,
+    direction: string,
+    selector?: HTMLElement
+  } | null
   constructor(target, selector) {
-    this.target = target instanceof HTMLElement ? target : typeof target === "string" ? document.querySelector(target) : null;
+    this.target = target instanceof HTMLElement 
+      ? target 
+      : typeof target === "string" 
+        ? document.querySelector(target) 
+        : null;
     if (!this.target) return;
     this.selector = selector;
     this._init();
-    this.pretouch = {};
+    this.pretouch = {
+      startX: 0,
+      startY: 0,
+      time: 0
+    };
     this.handles = {};
     this.preVector = {
       x: null,
@@ -58,16 +97,12 @@ class Gesture {
     this.target.addEventListener('touchcancel', this._cancel, false);
   }
   _touch(e: {
-    target: any, 
-    preventDefault: Function, 
+    target: any,
+    preventDefault: Function,
     touches: Array<Event>
   }) {
     this.e = e.target;
-    var point: Event & {pageX: number,  pageY: number} | { 
-      target: any; 
-      preventDefault: Function; 
-      touches: Event[]; 
-    } & {pageX: number,  pageY: number} = e.touches ? e.touches[0] : e;
+    var point: IPoint = e.touches ? e.touches[0] : e;
     var now = Date.now();
     this.touch.startX = point.pageX;
     this.touch.startY = point.pageY;
@@ -77,10 +112,7 @@ class Gesture {
     this.doubleTap = false;
     this._emit('touch', e);
     if (e.touches.length > 1) {
-      var point2: {
-        pageX: number,
-        pageY: number
-      } = e.touches[1];
+      var point2: IPoint = e.touches[1];
       this.preVector = {
         x: point2.pageX - this.touch.startX,
         y: point2.pageY - this.touch.startY
@@ -94,7 +126,12 @@ class Gesture {
         self.doubleTap = false;
         e.preventDefault();
       }, ~~this.longtapTime || 800);
-      this.doubleTap = this.pretouch.time && now - this.pretouch.time < 300 && ABS(this.touch.startX - this.pretouch.startX) < 30 && ABS(this.touch.startY - this.pretouch.startY) < 30 && ABS(this.touch.startTime - this.pretouch.time) < 300;
+      this.doubleTap =
+        !!(this.pretouch.time && now
+          - this.pretouch.time < 300 && ABS(this.touch.startX
+            - this.pretouch.startX) < 30 && ABS(this.touch.startY
+              - this.pretouch.startY) < 30 && ABS(this.touch.startTime
+                - this.pretouch.time) < 300);
       this.pretouch = { //reserve the last touch
         startX: this.touch.startX,
         startY: this.touch.startY,
@@ -114,10 +151,10 @@ class Gesture {
       this._emit('multimove', e);
       if (this.preVector.x !== null) {
         if (this.startDistance) {
-          this.params.zoom = calcLen(v) / this.startDistance;
+          this.params && (this.params.zoom = calcLen(v) / this.startDistance);
           this._emit('pinch', e);
         }
-        this.params.angle = calcAngle(v, this.preVector);
+        this.params && (this.params.angle = calcAngle(v, this.preVector));
         this._emit('rotate', e);
       }
       this.preVector.x = v.x;
@@ -125,13 +162,15 @@ class Gesture {
     } else {
       var diffX = point.pageX - this.touch.startX,
         diffY = point.pageY - this.touch.startY
-      this.params.diffY = diffY;
-      this.params.diffX = diffX;
-      if (this.movetouch.x) {
-        this.params.deltaX = point.pageX - this.movetouch.x;
-        this.params.deltaY = point.pageY - this.movetouch.y;
-      } else {
-        this.params.deltaX = this.params.deltaY = 0;
+      this.params && (this.params.diffY = diffY);
+      this.params && (this.params.diffX = diffX);
+      if (this.params) {
+        if (this.movetouch.x) {
+          this.params.deltaX = point.pageX - this.movetouch.x;
+          this.params.deltaY = point.pageY - this.movetouch.y;
+        } else {
+          this.params.deltaX = this.params.deltaY = 0;
+        }
       }
       if (ABS(diffX) > 30 || ABS(diffY) > 30) {
         this.longTapTimeout && clearTimeout(this.longTapTimeout);
@@ -154,6 +193,9 @@ class Gesture {
     var direction = '';
     this._emit('end', e);
     if (this.movetouch.x && (ABS(deltaX) > this.distance || this.movetouch.y !== null && ABS(deltaY) > this.distance)) { //swipe happened
+      if (!this.params) {
+        return
+      }
       if (ABS(deltaX) < ABS(deltaY)) { //swipeup and swipedown,but it generally used as a scrolling window
         if (deltaY < 0) {
           this._emit('swipeUp', e)
@@ -174,11 +216,10 @@ class Gesture {
       this._emit('swipe', e);
       this._emit("finish", e);
     } else {
-      self = this;
       if (!this.doubleTap && timestamp - this.touch.startTime < 300) {
-        this.tapTimeout = setTimeout(function () {
-          self._emit('tap', e);
-          self._emit("finish", e);
+        this.tapTimeout = setTimeout(() => {
+          this._emit('tap', e);
+          this._emit("finish", e);
         }, 300);
       } else if (this.doubleTap) {
         this._emit('dbtap', e);
@@ -196,13 +237,13 @@ class Gesture {
   }
   _cancel(e) {
     this._emit('cancel', e);
-    this._end();
+    this._end(e);
   }
   _emit(type, e) {
     !this.handles[type] && (this.handles[type] = []);
     var currentTarget = isTarget(this.e, this.selector);
     if (currentTarget || !this.selector) {
-      this.selector && (this.params.selector = currentTarget);
+      this.selector && this.params && (this.params.selector = currentTarget);
       for (var i = 0, len = this.handles[type].length; i < len; i++) {
         typeof this.handles[type][i] === 'function' && this.handles[type][i](e, this.params);
       }
@@ -220,10 +261,12 @@ class Gesture {
   destroy() {
     this.longTapTimeout && clearTimeout(this.longTapTimeout);
     this.tapTimeout && clearTimeout(this.tapTimeout);
-    this.target.removeEventListener('touchstart', this._touch);
-    this.target.removeEventListener('touchmove', this._move);
-    this.target.removeEventListener('touchend', this._end);
-    this.target.removeEventListener('touchcancel', this._cancel);
+    if (this.target) {
+      this.target.removeEventListener('touchstart', this._touch);
+      this.target.removeEventListener('touchmove', this._move);
+      this.target.removeEventListener('touchend', this._end);
+      this.target.removeEventListener('touchcancel', this._cancel);
+    }
     this.params = this.handles = this.movetouch = this.pretouch = this.touch = this.longTapTimeout = null;
     return false;
   }
@@ -235,8 +278,15 @@ class Gesture {
     return this;
   }
   _init() {
-    this.touch = {};
-    this.movetouch = {}
+    this.touch = {
+      startTime: 0,
+      startX: 0,
+      startY: 0
+    };
+    this.movetouch = {
+      x: 0,
+      y:0
+    }
     this.params = {
       zoom: 1,
       deltaX: 0,
