@@ -1,8 +1,8 @@
 class Types<T> {
-  type (type: T): string {
+  type(type: T): string {
     return Object.prototype.toString.call(type).slice(8, -1);
   }
-    //是否字符串
+  //是否字符串
   isString(arg: T): boolean {
     return this.type(arg) === "String";
   }
@@ -205,12 +205,12 @@ class Types<T> {
 
     // 出生日期验证
     let sBirthday: string = (
-        sId.substr(6, 4) +
-        "-" +
-        Number(sId.substr(10, 2)) +
-        "-" +
-        Number(sId.substr(12, 2))
-      ).replace(/-/g, "/"),
+      sId.substr(6, 4) +
+      "-" +
+      Number(sId.substr(10, 2)) +
+      "-" +
+      Number(sId.substr(12, 2))
+    ).replace(/-/g, "/"),
       d = new Date(sBirthday);
     if (
       sBirthday !=
@@ -234,7 +234,62 @@ class Types<T> {
     }
 
     return true;
-  } 
+  }
+  /**
+   * 判断字符串是否含有表情包
+   * @param substring string
+   */
+  isEmojiCharacter(substring: string) {
+    for (let i = 0; i < substring.length; i++) {
+      let hs = substring.charCodeAt(i);
+      if (0xd800 <= hs && hs <= 0xdbff) {
+        if (substring.length > 1) {
+          let ls = substring.charCodeAt(i + 1);
+          let uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
+          if (0x1d000 <= uc && uc <= 0x1f77f) {
+            return true;
+          }
+        }
+      } else if (substring.length > 1) {
+        let ls = substring.charCodeAt(i + 1);
+        if (ls == 0x20e3) {
+          return true;
+        }
+      } else {
+        if (0x2100 <= hs && hs <= 0x27ff) {
+          return true;
+        } else if (0x2B05 <= hs && hs <= 0x2b07) {
+          return true;
+        } else if (0x2934 <= hs && hs <= 0x2935) {
+          return true;
+        } else if (0x3297 <= hs && hs <= 0x3299) {
+          return true;
+        } else if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030
+          || hs == 0x2b55 || hs == 0x2b1c || hs == 0x2b1b
+          || hs == 0x2b50) {
+          return true;
+        }
+      }
+    }
+  }
+  /**
+   * 字符串文本的长度   
+   * 一个汉字等于两个字符串
+   * 一个字母等于一个字符串
+   * @param value 字符串文本
+   */
+  validateTextLength (value: string) {
+    // 中文、中文标点、全角字符按1长度，英文、英文符号、数字按0.5长度计算
+    let cnReg = /([\u4e00-\u9fa5]|[\u3000-\u303F]|[\uFF00-\uFF60])/g
+    let mat = value.match(cnReg)
+    let length
+    if (mat) {
+      length = (mat.length + (value.length - mat.length) * 0.5)
+      return length
+    } else {
+      return value.length * 0.5
+    }
+  }
 }
 
 export default new Types()

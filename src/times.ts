@@ -69,7 +69,7 @@ class Times implements ITimes {
     let cutMonth = function (index) {
       if (index <= len && index >= -len) {
         return directions === 1 ? formatPre(index).concat(cutMonth(++index)) :
-        directions === 2 ? formatNext(index).concat(cutMonth(++index)) : formatCurr(index).concat(cutMonth(++index))
+          directions === 2 ? formatNext(index).concat(cutMonth(++index)) : formatCurr(index).concat(cutMonth(++index))
       }
       return []
     }
@@ -227,6 +227,26 @@ class Times implements ITimes {
     let numdays = this.getDayOfYear(time);
     return Math.ceil(numdays / 7);
   }
+
+  /**
+   * @params{string} 1990/01/01 or 1990-01-01
+   * @return{number}
+   */
+  getAge(date) {
+    var birthday = new Date(date);
+    var d = new Date();
+
+    var age =
+      d.getFullYear() - birthday.getFullYear() -
+      (
+        d.getMonth() < birthday.getMonth() ||
+          (d.getMonth() == birthday.getMonth() && d.getDate() < birthday.getDate())
+          ? 1
+          : 0);
+
+    return age;
+  }
+
   format() {
   }
 }

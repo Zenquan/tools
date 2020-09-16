@@ -1,5 +1,1 @@
-import time from '../src/time'
-
-test('#format()', () => {
-  expect(time.format()).toEqual('');
-});
+import time from '../src/Times'

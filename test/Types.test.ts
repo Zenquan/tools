@@ -1,4 +1,6 @@
-import {type} from '../src/type'
+import Types from '../src/Types'
+
+const type = Types.type
 
 test('#Number', () => {
   expect(type(2)).toEqual('Number');
