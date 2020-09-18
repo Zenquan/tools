@@ -57,6 +57,7 @@
 		"axios": "^0.20.0",
 		"axios-jsonp": "^1.0.4",
 		"lodash-es": "^4.17.15",
+		"react-dom": "^16.13.1",
 		"react-toast-mobile": "^1.0.10"
 	},
 	"browserslist": [
