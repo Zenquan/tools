@@ -1,21 +1,18 @@
 import Request from '../src/Request'
 
 export const BaseApi = new Request({
-  baseURL: `http://zhihu.joyenjoy.tech/`
+  baseURL: `http://zhihu.joyenjoy.tech`
 }).getInstance()
 
-test('#get', () => {
+test('#get', async () => {
   const users = (config) => {
     return BaseApi.get('/users', {...config})
   }
   
   let result;
-  users({
+  const res = await users({
     params: {}
-  }).then(res => {
-    console.log('res>>>', res);
-    result = res
   })
 
-  expect(result).toEqual([])
+  expect(res.data).toEqual([{ gender: 'male', _id: '5f6218c9a598b7502a4089a2', name: '蔡镇泉222' }])
 })

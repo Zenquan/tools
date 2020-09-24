@@ -124,7 +124,7 @@ class Times implements ITimes {
    *
    * @example date.getDays('2018-1-29', 6) // -> ["2018-1-26", "2018-1-27", "2018-1-28", "2018-1-29", "2018-1-30", "2018-1-31", "2018-2-1"]
    */
-  getDays(time, len, diretion) {
+  getDays(time, len, diretion?: number) {
     let tt = new Date(time)
     let getDay = function (day) {
       let t = new Date(time)

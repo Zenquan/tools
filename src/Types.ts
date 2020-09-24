@@ -1,4 +1,8 @@
 class Types<T> {
+  // constructor () {
+  //   this.type = this.type.bind(this)
+  //   this.isString = this.isString.bind(this)
+  // }
   type(type: T): string {
     return Object.prototype.toString.call(type).slice(8, -1);
   }

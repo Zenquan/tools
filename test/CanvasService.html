@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script src="../lib//CanvasService.js"></script>
+  <script>
+    const canvas = new CanvasService()
+    const getAvatar = async () => {
+      const res = await canvas.getAvator('https://joyrun-activity-upyun.thejoyrun.com/huodong/2020/09/run-challenge/assets/img/share.jpg', 'avatar')
+      console.log('avatar>>>', res); 
+      document.body.appendChild(res)
+    }
+
+    getAvatar()
+  </script>
+</body>
+</html>

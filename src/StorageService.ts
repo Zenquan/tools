@@ -8,7 +8,7 @@ class StorageService {
 
   /*-----------------localStorage---------------------*/
   /*设置localStorage*/
-  setLocal(key, val) {
+  setLocal(key: string, val) {
     let setting = arguments[0];
     if (Object.prototype.toString.call(setting).slice(8, -1) === 'Object') {
       for (let i in setting) {
@@ -21,14 +21,14 @@ class StorageService {
   }
 
   /*获取localStorage*/
-  getLocal(key) {
+  getLocal(key: string) {
     if (key) return JSON.parse(`${this.ls.getItem(key)}`)
     return null;
 
   }
 
   /*移除localStorage*/
-  removeLocal(key) {
+  removeLocal(key: string) {
     this.ls.removeItem(key)
   }
 
@@ -40,7 +40,7 @@ class StorageService {
 
   /*-----------------sessionStorage---------------------*/
   /*设置sessionStorage*/
-  setSession(key, val) {
+  setSession(key: string, val) {
     let setting = arguments[0];
     if (Object.prototype.toString.call(setting).slice(8, -1) === 'Object') {
       for (let i in setting) {
@@ -53,14 +53,14 @@ class StorageService {
   }
 
   /*获取sessionStorage*/
-  getSession(key) {
+  getSession(key: string) {
     if (key) return JSON.parse(`${this.ss.getItem(key)}`)
     return null;
 
   }
 
   /*移除sessionStorage*/
-  removeSession(key) {
+  removeSession(key: string) {
     this.ss.removeItem(key)
   }
 

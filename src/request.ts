@@ -5,8 +5,8 @@ import axios, {
   AxiosError
 } from 'axios'
 
-import { T } from 'react-toast-mobile'
-import { debounce } from 'lodash-es'
+// import { T } from 'react-toast-mobile'
+// import { debounce } from 'lodash-es'
 
 export interface IRequest {
   getInstance(): AxiosInstance
@@ -44,16 +44,16 @@ let loading: any = null
 let needLoadingRequestCount = 0
 
 // 防抖：将 300ms 间隔内的关闭 loading 便合并为一次。防止连续请求时， loading闪烁的问题。
-let toHideLoading = debounce(() => {
-  T.loaded()
-  loading = null
-}, 300)
+// let toHideLoading = debounce(() => {
+//   T.loaded()
+//   loading = null
+// }, 300)
 
 function showLoading() {
   // 因为关闭时加了抖动，此时loading对象可能还存在，
   // 但needLoadingRequestCount已经变成0.避免这种情况下会重新创建个loading
   if (needLoadingRequestCount === 0 && !loading) {
-    loading = T.loading()
+    // loading = T.loading()
   }
   needLoadingRequestCount++
 }
@@ -64,7 +64,7 @@ function hideLoading() {
   needLoadingRequestCount = Math.max(needLoadingRequestCount, 0)
   if (needLoadingRequestCount === 0) {
     // 关闭loading
-    toHideLoading()
+    // toHideLoading()
   }
 }
 
@@ -91,15 +91,16 @@ export default class Request implements IRequest {
       let statusCode = res.status
 
       if (statusCode === STATUS.SUCCESS) {
-        let result = res.data
+        let result = res
+        return result
 
-        if (res.data.ret != null && Number(res.data.ret) !== 0) {
-          res.data.msg && T.notify(res.data.msg)
-          return Promise.reject(res.data.msg)
-        } else if (result.data || result.html || result.address || result.msg) {
-          // 有数据则返回
-          return result
-        }
+        // if (res.data.ret != null && Number(res.data.ret) !== 0) {
+        //   // res.data.msg && T.notify(res.data.msg)
+        //   return Promise.reject(res.data.msg)
+        // } else if (result.data || result.html || result.address || result.msg) {
+        //   // 有数据则返回
+        //   return result
+        // }
 
         // 有数据则返回
         // if (result.data || result.html || result.address || result.msg) {
@@ -119,7 +120,7 @@ export default class Request implements IRequest {
       }
     }, (err: AxiosError) => {
       hideLoading()
-      T.notify(err)
+      // T.notify(err)
       return Promise.reject(err)
     })
   }

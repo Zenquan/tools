@@ -20,15 +20,15 @@ const LightClassroom = (things, num) => {
   console.log(`教室里的灯亮了`)
 }
 
-test('#on #emit', () => {
-  bell.setMaxListeners(5)
-  bell.on('响', studentIntoClassroom)
-  bell.on('响', teacherIntoClassroom)
-  bell.on('响', studentIntoClassroom)
-  bell.on('响', teacherIntoClassroom)
-  bell.on('响', studentIntoClassroom)
-  bell.on('响', teacherIntoClassroom)
-  bell.on('响', studentIntoClassroom)
+// test('#on #emit', () => {
+//   bell.setMaxListeners(5)
+//   bell.on('响', studentIntoClassroom)
+//   bell.on('响', teacherIntoClassroom)
+//   bell.on('响', studentIntoClassroom)
+//   bell.on('响', teacherIntoClassroom)
+//   bell.on('响', studentIntoClassroom)
+//   bell.on('响', teacherIntoClassroom)
+//   bell.on('响', studentIntoClassroom)
   // bell.on('响', teacherIntoClassroom)
   // bell.on('响', studentIntoClassroom)
   // bell.on('响', teacherIntoClassroom)
@@ -57,18 +57,18 @@ test('#on #emit', () => {
   // bell.once('响', masterIntoClassroom)
   
   // bell.emit('响', '书', 302)
-  console.log('=================')
-  bell.emit('响', '书', 301)
-})
-
-// test('#on #emit', () => {
-//   bell.setMaxListeners(5)
-//   bell.on('响', studentIntoClassroom)
-//   bell.on('响', teacherIntoClassroom)
-//   bell.on('响', masterIntoClassroom)
-//   bell.emit('响', '书', 302)
+//   console.log('=================')
 //   bell.emit('响', '书', 301)
 // })
+
+test('#on #emit', () => {
+  bell.setMaxListeners(5)
+  bell.on('响', studentIntoClassroom)
+  bell.on('响', teacherIntoClassroom)
+  bell.on('响', masterIntoClassroom)
+  bell.emit('响', '书', 302)
+  bell.emit('响', '书', 301)
+})
 
 // test('#once #emit', () => {
 //   bell.setMaxListeners(5)
