@@ -21,7 +21,7 @@ class CanvasService {
       }) {
         const { target } = e
         const { status, response, readyState } = target
-        if (readyState == 4 && status == 200) {
+        if (readyState === 4 && status === 200) {
           let blob = response;
           let img: {
             classList: any,
