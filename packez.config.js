@@ -11,12 +11,6 @@ module.exports = function(opts) {
 		shouldUseEntryHTML: false,
 		polyfills: null,
 		shouldUseSourceMap: true,
-		resolve: {
-    alias: {
-        '@': resolve('src')
-      },
-      extensions: ['.tsx', '.ts', '.jsx', '.js', '.json']
-    },
 		output: {
 			globalObject: "this",
 			libraryTarget: "umd",
