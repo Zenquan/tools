@@ -13,7 +13,11 @@
 		"suppressImplicitAnyIndexErrors": true,
 		"noImplicitThis": false,
 		"experimentalDecorators": true,
-		"strictNullChecks": true
+		"strictNullChecks": true,
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"],
+		}
 	},
 	"include": ["src/**/*"]
 }
