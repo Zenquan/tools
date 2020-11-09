@@ -1,5 +1,5 @@
 {
-	"name": "zen-tools",
+	"name": "@jomsou/zen-tools",
 	"version": "0.1.0",
 	"description": "",
 	"main": "./dist/cjs/index.js",

@@ -3,8 +3,9 @@ class CanvasService {
    * 
    * @param url 远程图片的链接
    * @param avatarClass 添加的图片样式
+   * @type 'img' | 'src'
    */
-  getAvator(url: string, avatarClass: string) {
+  getRemotePic(url: string, avatarClass: string, type?: 'img' | 'src') {
     return new Promise((resolve, reject) => {
       window.URL = window.URL || window.webkitURL;  // Take care of vendor prefixes.
       let xhr = new XMLHttpRequest();
@@ -32,9 +33,13 @@ class CanvasService {
           reader.readAsDataURL(blob);
           reader.onloadend = function () {
             let base64data = reader.result;
-            img.src = base64data;
+            if (type === 'src') {
+              resolve(base64data)
+            } else {
+              img.src = base64data;
+              resolve(img)
+            }
           };
-          resolve(img)
         }
       };
     })

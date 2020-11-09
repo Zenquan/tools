@@ -6,18 +6,20 @@
   <title>Document</title>
 </head>
 <body>
-  <!-- <script src="../lib//CanvasService.js"></script> -->
-  <script src="https://cdn.bootcdn.net/ajax/libs/require.js/0.10.0/require.min.js"></script>
-  <!-- <script src="../umd/zen-tools.js"></script> -->
+  <script src="../lib/CanvasService.js"></script>
+  <!-- <script src="https://cdn.bootcdn.net/ajax/libs/require.js/0.10.0/require.min.js"></script> -->
+  <!-- <script src="../umd/zen-tools.min.js"></script> -->
   <!-- <script src="../dist/cjs/CanvasService.js"></script> -->
-  <script src="../dist/esm/CanvasService.js"></script>
+  <!-- <script src="../dist/esm/CanvasService.js"></script> -->
 
   <script>
     const canvas = new CanvasService()
     const getAvatar = async () => {
-      const res = await canvas.getAvator('https://joyrun-activity-upyun.thejoyrun.com/huodong/2020/09/run-challenge/assets/img/share.jpg', 'avatar')
-      console.log('avatar>>>', res); 
-      document.body.appendChild(res)
+      const avatarUrl = 'https://joyrun-activity-upyun.thejoyrun.com/huodong/2020/09/run-challenge/assets/img/share.jpg',
+      res1 = await canvas.getRemotePic(avatarUrl, 'avatar', 'src'),
+      res2 = await canvas.getRemotePic(avatarUrl, 'avatar', 'img')
+      console.log('avatar>>>', res1, res2); 
+      document.body.appendChild(res2)
     }
 
     getAvatar()
