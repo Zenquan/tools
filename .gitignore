@@ -1,7 +1,6 @@
 /.vscode
 /.docz
 /node_modules
-/lib
 /esm
 /dest
 /dist
