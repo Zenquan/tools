@@ -20,7 +20,7 @@ jobs:
     - name: Release
       run: |
         npm install 
-        npm build:lib
+        npm run build:lib
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         npx version-from-git --allow-same-version --template 'master.short'

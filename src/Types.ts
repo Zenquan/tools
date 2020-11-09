@@ -1,3 +1,8 @@
+
+type IBrowerType = "Opera" | "Edge" | "Safari" | "Chrome" 
+                    | "IE7" | "IE8" | "IE9" | "IE10" 
+                    | "IE7以下" | "IE11" | "FF" | undefined
+
 class Types<T> {
   // constructor () {
   //   this.type = this.type.bind(this)
@@ -116,8 +121,9 @@ class Types<T> {
     }
     return flag;
   }
+
   //是什么浏览器类型
-  browserType() {
+  browserType(): IBrowerType {
     //取得浏览器的userAgent字符串
     let userAgent = navigator.userAgent;
     //判断是否Opera浏览器
@@ -139,23 +145,26 @@ class Types<T> {
     //判断Chrome浏览器
     let isChrome =
       userAgent.indexOf("Chrome") > -1 && userAgent.indexOf("Safari") > -1;
-
+    
+    let browser;
     if (isIE) {
       let reIE = new RegExp("MSIE (\\d+\\.\\d+);");
       reIE.test(userAgent);
       let fIEVersion = parseFloat(RegExp["$1"]);
-      if (fIEVersion == 7) return "IE7";
-      else if (fIEVersion == 8) return "IE8";
-      else if (fIEVersion == 9) return "IE9";
-      else if (fIEVersion == 10) return "IE10";
-      else return "IE7以下"; //IE版本过低
+      if (fIEVersion == 7) browser = "IE7";
+      else if (fIEVersion == 8) browser = "IE8";
+      else if (fIEVersion == 9) browser = "IE9";
+      else if (fIEVersion == 10) browser = "IE10";
+      else browser = "IE7以下"; //IE版本过低
     }
-    if (isIE11) return "IE11";
-    if (isEdge) return "Edge";
-    if (isFF) return "FF";
-    if (isOpera) return "Opera";
-    if (isSafari) return "Safari";
-    if (isChrome) return "Chrome";
+    if (isIE11) browser = "IE11";
+    if (isEdge) browser = "Edge";
+    if (isFF) browser = "FF";
+    if (isOpera) browser = "Opera";
+    if (isSafari) browser = "Safari";
+    if (isChrome) browser = "Chrome";
+
+    return browser
   }
 
   // 严格的身份证校验
@@ -243,7 +252,8 @@ class Types<T> {
    * 判断字符串是否含有表情包
    * @param substring string
    */
-  isEmojiCharacter(substring: string) {
+  isEmojiCharacter(substring: string): boolean {
+    let result: boolean = false;
     for (let i = 0; i < substring.length; i++) {
       let hs = substring.charCodeAt(i);
       if (0xd800 <= hs && hs <= 0xdbff) {
@@ -251,30 +261,32 @@ class Types<T> {
           let ls = substring.charCodeAt(i + 1);
           let uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
           if (0x1d000 <= uc && uc <= 0x1f77f) {
-            return true;
+            result = true;
           }
         }
       } else if (substring.length > 1) {
         let ls = substring.charCodeAt(i + 1);
         if (ls == 0x20e3) {
-          return true;
+          result = true;
         }
       } else {
         if (0x2100 <= hs && hs <= 0x27ff) {
-          return true;
+          result = true;
         } else if (0x2B05 <= hs && hs <= 0x2b07) {
-          return true;
+          result = true;
         } else if (0x2934 <= hs && hs <= 0x2935) {
-          return true;
+          result = true;
         } else if (0x3297 <= hs && hs <= 0x3299) {
-          return true;
+          result = true;
         } else if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030
           || hs == 0x2b55 || hs == 0x2b1c || hs == 0x2b1b
           || hs == 0x2b50) {
-          return true;
+            result = true;
         }
       }
     }
+
+    return result;
   }
   /**
    * 字符串文本的长度   
