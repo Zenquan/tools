@@ -3,7 +3,7 @@ import StorageService from './StorageService';
 import EventEmitter from './EventEmitter';
 import CanvasService from './CanvasService';
 import * as MathService from './Math';
-import Gesture from './Gesture';
+// import Gesture from './Gesture';
 import OS from './OS';
 import Request from './Request';
 import times from './Times';
@@ -18,7 +18,7 @@ export {
   EventEmitter,
   CanvasService,
   MathService,
-  Gesture,
+  // Gesture,
   OS,
   Request,
   times,

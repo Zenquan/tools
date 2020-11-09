@@ -19,8 +19,6 @@ jobs:
         registry-url: 'https://registry.npmjs.org'
     - name: Release
       run: |
-        npm install 
-        npm run build:lib
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         npx version-from-git --allow-same-version --template 'master.short'
