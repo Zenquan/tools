@@ -11,6 +11,11 @@ declare class StorageService {
     removeSession(key: string): void;
     clearSession(): void;
     /**
+     * 设置cookie
+     * @param cookie cookie的值
+     */
+    setCookie(cookie: string): void;
+    /**
      * 站外环境设置悦跑cookie
      * @param uid 用户uid
      * @param sid 用户sid

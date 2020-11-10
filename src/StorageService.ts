@@ -70,13 +70,21 @@ class StorageService {
   }
 
   /**
+   * 设置cookie
+   * @param cookie cookie的值
+   */
+  setCookie(cookie: string) {
+    document.cookie = cookie
+  }
+
+  /**
    * 站外环境设置悦跑cookie
    * @param uid 用户uid
    * @param sid 用户sid
    */
   setYpcookie(uid: string, sid: string) {
     const ypcookie = encodeURIComponent(`uid=${uid}&sid=${sid}`)
-    document.cookie = `ypcookie=${ypcookie}`
+    this.setCookie(`ypcookie=${ypcookie}`)
   }
 
 }
