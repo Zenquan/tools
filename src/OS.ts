@@ -110,6 +110,23 @@ class OS {
       htmlEl.style.fontSize = `${document.documentElement.clientWidth / 7.5}px`;
     };
   }
+  checkAppV1AndV2 (v1: string, v2: string) {
+    let _v1: Array<string> = v1.split("."),
+      _v2: Array<string> = v2.split("."),
+      _r = +_v1[0] - (+_v2[0]),
+      flag = _r == 0 
+            && v1 != v2 
+            ? this.checkAppV1AndV2(
+                _v1.splice(1).join("."), 
+                _v2.splice(1).join(".")
+              ) 
+            : _r;
+
+    return flag;
+  }
+  checkAppVersionIsOK (basic, target) {
+    return !(this.checkAppV1AndV2(basic, target) > 0)
+  }
 }
 
 export default new OS()
