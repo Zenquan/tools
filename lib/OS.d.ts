@@ -33,6 +33,8 @@ declare class OS {
      */
     getNetworkType(): Promise<NetworkType>;
     setRootFontSizeFromClient(): void;
+    checkAppV1AndV2(v1: string, v2: string): any;
+    checkAppVersionIsOK(basic: any, target: any): boolean;
 }
 declare const _default: OS;
 export default _default;

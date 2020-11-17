@@ -63,11 +63,11 @@ const LightClassroom = (things, num) => {
 
 test('#on #emit', () => {
   bell.setMaxListeners(5)
-  bell.on('响', studentIntoClassroom)
-  bell.on('响', teacherIntoClassroom)
-  bell.on('响', masterIntoClassroom)
-  bell.emit('响', '书', 302)
-  bell.emit('响', '书', 301)
+  // bell.on('响', studentIntoClassroom)
+  // bell.on('响', teacherIntoClassroom)
+  // bell.on('响', masterIntoClassroom)
+  // bell.emit('响', '书', 302)
+  // bell.emit('响', '书', 301)
 })
 
 // test('#once #emit', () => {

@@ -16,7 +16,7 @@ interface IEventEmitter {
   emit: Function;
 }
 
-class EventEmitter implements IEventEmitter{
+class EventEmitter implements IEventEmitter {
   private events: object
   private _maxListeners: number
   constructor() {
