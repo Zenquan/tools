@@ -4,7 +4,7 @@ on:
   push:
     branches: master
     paths:
-        - 'lib/*'
+        - 'lib/**'
 
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
         git config --local user.name "GitHub Action"
         npx version-from-git --allow-same-version --template 'master.short'
     - name: Publish to npmjs
-      run: | 
+      run: |
         npm publish --access public
       env:
         GITHUB_TOKEN: ${{ secrets.MG }}
