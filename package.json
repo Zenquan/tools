@@ -58,7 +58,7 @@
 		"@types/acorn": "^4.0.5",
 		"@types/estree": "0.0.41",
 		"acorn": "^7.1.0",
-		"axios": "^0.20.0",
+		"axios": "^0.21.1",
 		"axios-jsonp": "^1.0.4",
 		"docz": "^2.3.1",
 		"lodash-es": "^4.17.15",
