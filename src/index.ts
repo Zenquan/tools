@@ -1,29 +1,25 @@
-import stringService from './StringService';
-import StorageService from './StorageService';
-import EventEmitter from './EventEmitter';
-import CanvasService from './CanvasService';
-import * as MathService from './Math';
-// import Gesture from './Gesture';
-import OS from './OS';
-import Request from './Request';
-import times from './Times';
+import * as JrfeUtils from '@jomsou/utils';
+import StringService from './StringService';
+import StorageService from './fe/StorageService';
+import * as MathService from './fe/math';
+import OsService from './fe/OsService';
+import Request from './fe/Request';
+import times from './TimeService';
 import types from './Types';
 import Validator from './Validator';
 import * as validatorHelper from './validator-helper';
-import wxService from './WxService'
+import WxService from './wx/WxService';
 
 export {
-  stringService,
+  JrfeUtils,
+  StringService,
   StorageService,
-  EventEmitter,
-  CanvasService,
   MathService,
-  // Gesture,
-  OS,
+  OsService,
   Request,
   times,
   types,
   Validator,
   validatorHelper,
-  wxService
+  WxService
 }

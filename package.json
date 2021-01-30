@@ -1,78 +1,78 @@
 {
-	"name": "@jomsou/zen-tools",
-	"version": "0.1.1",
-	"description": "",
-	"main": "./lib/index.js",
-	"module": "./dist/esm/index.js",
-	"types": "./lib/index.d.ts",
-	"scripts": {
-		"start": "tsc -w",
-		"build": "run-s clear build:* bundle:dev bundle:prod bundle:banner",
-		"build:lib": "tsc",
-		"build:cjs": "babel lib --config-file=./babel.config.js  --out-dir dist/cjs",
-		"build:esm": "babel lib --config-file=./babel.config.esm.js  --out-dir dist/esm",
-		"clear": "rimraf lib dist umd",
-		"bundle:dev": "packez bundle ./src/index.ts -d umd -c",
-		"bundle:prod": "packez bundle ./src/index.ts -d umd --state prod",
-		"bundle:banner": "node scripts/banner.js",
-		"test": "jest",
-		"update": "node ./update/index.js",
-		"docz:dev": "docz dev",
-		"docz:build": "docz build",
-		"docz:serve": "docz build && docz serve"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/zenquan/zen-tools.git"
-	},
-	"keywords": [
-		"zentools"
-	],
-	"files": [
-		"umd",
-		"lib",
-		"dist",
-		"*.md"
-	],
-	"author": "jomsoucan@gmail.com",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/zenquan/zen-tools/issues"
-	},
-	"homepage": "https://github.com/zenquan/zen-tools#readme",
-	"devDependencies": {
-		"@babel/cli": "^7.8.4",
-		"@types/fs-extra": "^8.1.0",
-		"@types/jest": "^24.0.25",
-		"babel-plugin-search-and-replace": "^1.0.1",
-		"babel-preset-packez": "^1.0.0",
-		"fs-extra": "^8.1.0",
-		"gatsby-plugin-sass": "^2.3.13",
-		"jest": "^24.9.0",
-		"npm-run-all": "^4.1.5",
-		"packez": "^3.1.0",
-		"rimraf": "^3.0.0"
-	},
-	"dependencies": {
-		"@babel/runtime": "^7.8.4",
-		"@types/acorn": "^4.0.5",
-		"@types/estree": "0.0.41",
-		"acorn": "^7.1.0",
-		"axios": "^0.20.0",
-		"axios-jsonp": "^1.0.4",
-		"docz": "^2.3.1",
-		"lodash-es": "^4.17.15",
-		"react": "^16.13.1",
-		"react-dom": "^16.13.1",
-		"react-toast-mobile": "^1.0.10"
-	},
-	"browserslist": [
-		">=0.25%",
-		"not dead",
-		"not op_mini all",
-		"not Android 4.4.3-4.4.4",
-		"not ios_saf < 10",
-		"not Chrome < 50",
-		"firefox ESR"
-	]
+  "name": "@jomsou/tools",
+  "version": "0.1.0",
+  "description": "jslib最好用的js库脚手架",
+  "main": "dist/index.js",
+  "jsnext:main": "dist/index.esm.js",
+  "module": "dist/index.esm.js",
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "test": "npm run lint && nyc mocha",
+    "release": "npm test && npm run build && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags",
+    "lint": "eslint -c .eslintrc.js 'src/**/*.ts'",
+    "lint:fix": "eslint -c .eslintrc.js 'src/**/*.ts' --fix",
+    "build:self": "rollup -c config/rollup.config.js",
+    "build:esm": "rollup -c config/rollup.config.esm.js",
+    "build:aio": "rollup -c config/rollup.config.aio.js",
+    "build:aio.min": "cross-env NODE_ENV=production npm run build:aio",
+    "build": "npm run clean && npm run build:self && npm run build:esm && npm run build:aio && npm run build:aio.min",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "docs:jsdoc2md": "rimraf doc/README.md && npx jsdoc2md --files src/* --configure ./jsdoc2md.json >> doc/README.md",
+    "docs:build": "npm run docs:jsdoc2md && npx vuepress build doc",
+    "docs:dev": "npm run docs:jsdoc2md && npx vuepress dev doc"
+  },
+  "author": "zenquan",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/zenquan/zen-tools.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zenquan/zen-tools/issues"
+  },
+  "files": [
+    "/dist",
+    "*.d.ts"
+  ],
+  "engines": {
+    "node": ">= 0.12.0"
+  },
+  "devDependencies": {
+    "@js-lib/cli": "^1.6.0",
+    "cross-env": "5.2.0",
+    "rimraf": "2.6.2",
+    "es5-shim": "4.5.10",
+    "eslint": "^5.15.1",
+    "@typescript-eslint/eslint-plugin": "^1.4.2",
+    "@typescript-eslint/parser": "^1.4.2",
+    "rollup": "0.57.1",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-commonjs": "8.3.0",
+    "rollup-plugin-node-resolve": "3.0.3",
+    "rollup-plugin-typescript2": "0.18.0",
+    "rollup-plugin-uglify": "1.0.0",
+    "ts-node": "7.0.1",
+    "tslib": "1.9.3",
+    "typescript": "3.3.3333",
+    "babel-plugin-istanbul": "5.1.0",
+    "coveralls": "3.0.2",
+    "expect.js": "0.3.1",
+    "mocha": "3.5.3",
+    "nyc": "13.1.0",
+    "source-map-support": "0.5.9",
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-typescript": "^7.12.7",
+    "jsdoc-babel": "^0.5.0",
+    "jsdoc-to-markdown": "^6.0.1",
+    "vuepress": "^1.8.0"
+  },
+  "dependencies": {
+    "@jomsou/utils": "^0.1.1-master.e39de5c",
+    "axios": "^0.21.1",
+    "axios-jsonp": "^1.0.4",
+    "lodash-es": "^4.17.20"
+  }
 }
